@@ -1,26 +1,39 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
   StyleSheet,
+  Animated,
   TouchableOpacity,
-  ProgressBarAndroidComponent,
+  Image,
 } from "react-native";
 
 const Task = (props) => {
+  const fadeAnim = new Animated.Value(0);
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+  }, []);
+
   return (
-    <View style={styles.item}>
-      <View style={styles.itemLeft}>
-        <TouchableOpacity style={styles.square}></TouchableOpacity>
-        <Text style={styles.itemText}>{props.text}</Text>
-      </View>
-      <View style={styles.circular}></View>
-    </View>
+    <Animated.View style={{ ...styles.taskItem, opacity: fadeAnim }}>
+      <Text style={styles.taskText}>{props.text}</Text>
+      <TouchableOpacity>
+        <Image
+          source={require("../assets/check.png")}
+          style={styles.taskIcon}
+        />
+      </TouchableOpacity>
+    </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
-  item: {
+  taskItem: {
     backgroundColor: "#191970",
     padding: 15,
     borderRadius: 10,
@@ -28,29 +41,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 20,
+    shadowColor: "#191970",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 2,
+    borderColor: "#191970",
   },
-  itemLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-    flexWrap: "wrap",
+  taskText: {
+    fontSize: 18,
+    fontFamily: "Roboto",
+    color: "#FFF",
+    fontWeight: "bold",
   },
-  square: {
+  taskIcon: {
     width: 24,
     height: 24,
-    backgroundColor: "#FFF",
-    borderRadius: 5,
-    marginRight: 15,
-  },
-  itemText: {
-    maxWidth: "80%",
-    color: "#FFF",
-  },
-  circular: {
-    width: 12,
-    height: 12,
-    borderColor: "#FFF",
-    borderWidth: 2,
-    borderRadius: 5,
+    tintColor: "#FFF",
   },
 });
 

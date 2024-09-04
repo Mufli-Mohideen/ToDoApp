@@ -18,24 +18,22 @@ export default function App() {
   const [taskItems, setTaskItems] = useState([]);
 
   const handleAddTask = () => {
-    Keyboard.dismiss();
-    setTaskItems([...taskItems, task]);
-    setTask("");
+    if (task.trim()) {
+      Keyboard.dismiss();
+      setTaskItems([...taskItems, task]);
+      setTask("");
+    }
   };
 
   const completeTask = (index) => {
-    let itemsCopy = [...taskItems]; // Corrected: Copy the array
-    itemsCopy.splice(index, 1); // Remove the task at the specified index
+    let itemsCopy = [...taskItems];
+    itemsCopy.splice(index, 1);
     setTaskItems(itemsCopy);
   };
 
   return (
     <View style={styles.container}>
-      <ScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-        }}
-      >
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={styles.tasksWrapper}>
           <Text style={styles.sectionTitle}>Today's Tasks</Text>
           <View style={styles.items}>
@@ -60,9 +58,9 @@ export default function App() {
           style={styles.input}
           placeholder={"Write a Task"}
           value={task}
-          onChangeText={(text) => setTask(text)} // Corrected: onChangeText to handle text input
+          onChangeText={(text) => setTask(text)}
         />
-        <TouchableOpacity onPress={() => handleAddTask()}>
+        <TouchableOpacity onPress={handleAddTask}>
           <View style={styles.addWrapper}>
             <Text style={styles.addText}>+</Text>
           </View>
@@ -84,7 +82,6 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 24,
     fontWeight: "bold",
-    fontFamily: "sans-serif-medium",
     textAlign: "center",
   },
   items: {
@@ -100,14 +97,10 @@ const styles = StyleSheet.create({
   },
   input: {
     paddingVertical: 15,
-    width: 250,
+    width: 300,
     paddingHorizontal: 15,
     backgroundColor: "#dddddd",
     borderRadius: 60,
-    shadowColor: "#171717",
-    shadowOffset: { width: -2, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
   },
   addWrapper: {
     width: 60,
